@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
-export default function Home({ getWatchlist }) {
+export default function Home() {
   const { user } = useContext(UserContext);
 
   const [movie, setMovie] = useState("");
@@ -59,56 +59,85 @@ export default function Home({ getWatchlist }) {
 
   const addToWatchlistClick = async (e, m) => {
     e.preventDefault;
+    console.log(user);
     try {
       const response = await fetch(`http://localhost:3000/watchlist`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ movie: m }),
+        body: JSON.stringify({ movie: m, user }),
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-      getWatchlist();
+      // getWatchlist();
     } catch (error) {
       console.error("Failed to save movie recommentation:", error);
     }
   };
+  const navbarStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#333",
+    color: "white",
+  };
+  const linksContainerStyle = {
+    display: "flex",
+    gap: "1.5rem",
+    alignItems: "center",
+  };
+  const linkStyle = {
+    color: "white",
+    textDecoration: "none",
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+  };
   return (
     <div>
-      <nav
-        className="navbar"
-        style={{
-          display: "flex",
-          padding: "10px",
-          gap: "100px",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <h2>Movie Recommender</h2>
-        {user && <Link to="/watchlist">Watchlist</Link>}
-        {user ? (
-          <Link to="/logout">
-            <button>Logout</button>
+      <nav className="navbar" style={navbarStyle}>
+        <h2 style={{ fontSize: "2rem" }}>Movie Pal 🍿</h2>
+        <div className="links-container" style={linksContainerStyle}>
+          {user && (
+            <Link style={linkStyle} to="/watchlist">
+              My Watchlist
+            </Link>
+          )}
+          <Link style={linkStyle} to="/watchlist">
+            Movie Lists
           </Link>
-        ) : (
-          <Link to="/login">
-            <button>Login</button>
+          <Link style={linkStyle} to="/watchlist">
+            All Movies
           </Link>
-        )}
+          {user ? (
+            <Link style={linkStyle} to="/logout">
+              <button>Logout</button>
+            </Link>
+          ) : (
+            <Link style={linkStyle} to="/login">
+              <button>Login</button>
+            </Link>
+          )}
+        </div>
       </nav>
-
-      <form onSubmit={handleSubmit} className="search-form">
-        <input
-          type="text"
-          value={movie}
-          onChange={(e) => setMovie(e.target.value)}
-          placeholder="Enter a movie title"
-        />
-        <button type="submit">Find Movie</button>
-      </form>
+      <div className="search-container">
+        <h1>Find a movie 🎥</h1>
+        <h3>
+          Enter the name of the movie you want recommendations for and select
+          the correct option from the images to get your recommendations:
+        </h3>
+        <form onSubmit={handleSubmit} className="search-form">
+          <input
+            type="text"
+            value={movie}
+            onChange={(e) => setMovie(e.target.value)}
+            placeholder="Enter a movie title"
+          />
+          <button type="submit">Find Movie</button>
+        </form>
+      </div>
       <div className="movie-container">
         {options.length != 0 && (
           <h2>Click the movie you want recommendations for:</h2>

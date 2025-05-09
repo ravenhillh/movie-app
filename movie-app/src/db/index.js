@@ -11,7 +11,7 @@ mongoose
   .then(() => console.log("Connected to MongoDB Atlas"))
   .catch((error) => console.error("Error connecting to MongoDB Atlas:", error));
 
-const UserSchema = new mongoose.Schema({
+const WatcherSchema = new mongoose.Schema({
   id: { type: Number, unique: true },
   username: String,
   password: String,
@@ -37,7 +37,27 @@ const MovieSchema = new mongoose.Schema({
   id: Number,
 });
 
-const Movie = mongoose.model("Movie", MovieSchema);
-const User = mongoose.model("User", UserSchema);
+const MovieListSchema = new mongoose.Schema({
+  id: { type: Number, unique: true },
+  creatorId: Number,
+  title: String,
+  description: String,
+  movies: {
+    type: [
+      {
+        title: String,
+        overview: String,
+        release_date: String,
+        poster_path: String,
+        id: Number,
+      },
+    ],
+    default: [],
+  },
+});
 
-export { Movie, User };
+const Movie = mongoose.model("Movie", MovieSchema);
+const Watcher = mongoose.model("Watcher", WatcherSchema);
+const MovieList = mongoose.model("MovieList", MovieListSchema);
+
+export { Movie, Watcher, MovieList };

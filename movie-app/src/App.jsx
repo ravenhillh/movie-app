@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { UserContext } from "./UserContext";
 
 import "./App.css";
 import Watchlist from "./components/Watchlist";
@@ -12,35 +13,12 @@ import Logout from "./components/Logout";
 function App() {
   const [watchlist, setWatchlist] = useState([]);
 
-  useEffect(() => {
-    getWatchlist();
-  }, []);
-
-  const getWatchlist = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/watchlist`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data = await response.json();
-      setWatchlist(data);
-      console.log(data);
-    } catch (error) {
-      console.error("Failed to fetch movie recommendation:", error);
-    }
-  };
-
   return (
     <>
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home getWatchlist={getWatchlist} />} />
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/watchlist"
