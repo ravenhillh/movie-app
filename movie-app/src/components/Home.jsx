@@ -1,16 +1,19 @@
 import React from "react";
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../UserContext";
+import { AuthContext } from "../UserContext";
 
 export default function Home() {
-  const { user } = useContext(UserContext);
-
+  const { user, logout } = useContext(AuthContext);
   const [movie, setMovie] = useState("");
   const [recommendations, setRecommendations] = useState(null);
   const [options, setOptions] = useState([]);
   const getMovieRec = async () => {
     try {
+      if (!user) {
+        alert("You must be logged in to get movie recommendations.");
+        return;
+      }
       const response = await fetch(`http://localhost:3000/movie`, {
         method: "POST",
         headers: {
@@ -59,7 +62,6 @@ export default function Home() {
 
   const addToWatchlistClick = async (e, m) => {
     e.preventDefault;
-    console.log(user);
     try {
       const response = await fetch(`http://localhost:3000/watchlist`, {
         method: "POST",
@@ -71,7 +73,6 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-      // getWatchlist();
     } catch (error) {
       console.error("Failed to save movie recommentation:", error);
     }
@@ -102,19 +103,17 @@ export default function Home() {
         <div className="links-container" style={linksContainerStyle}>
           {user && (
             <Link style={linkStyle} to="/watchlist">
-              My Watchlist
+              My Profile
             </Link>
           )}
-          <Link style={linkStyle} to="/watchlist">
+          <Link style={linkStyle} to="/movielist">
             Movie Lists
           </Link>
-          <Link style={linkStyle} to="/watchlist">
+          <Link style={linkStyle} to="/allmovies">
             All Movies
           </Link>
           {user ? (
-            <Link style={linkStyle} to="/logout">
-              <button>Logout</button>
-            </Link>
+            <button onClick={logout}>Logout</button>
           ) : (
             <Link style={linkStyle} to="/login">
               <button>Login</button>
@@ -142,11 +141,11 @@ export default function Home() {
         {options.length != 0 && (
           <h2>Click the movie you want recommendations for:</h2>
         )}
-        {options.map((option) => {
+        {options.map((option, index) => {
           if (option.poster_path) {
             return (
               <div
-                key={option.id}
+                key={`${option.id} + ${index} `}
                 style={{
                   width: "200px",
                   padding: "10px",
@@ -175,9 +174,9 @@ export default function Home() {
           <div>
             <h2>Recommendations:</h2>
             <h3>Click movies to add to your watchlist</h3>
-            {recommendations.map((rec) => (
+            {recommendations.map((rec, index) => (
               <div
-                key={rec.id}
+                key={`${rec.id} + ${index} `}
                 style={{
                   width: "200px",
                   padding: "10px",

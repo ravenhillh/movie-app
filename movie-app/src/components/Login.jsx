@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
+import { AuthContext } from "../UserContext";
 
 export default function Login() {
+  const { login } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ export default function Login() {
         throw new Error(`Error: ${response.status}`);
       }
       const user = await response.json();
-      setUser(user);
+      login(user);
       setSuccess("Login successful!");
       setUsername("");
       setPassword("");
