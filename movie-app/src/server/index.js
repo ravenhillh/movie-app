@@ -107,6 +107,22 @@ app.post("/recommendation", (req, res) => {
     .then((json) => res.json(json))
     .catch((err) => console.error(err));
 });
+app.get("/movielist/streaming/:id", (req, res) => {
+  const { id } = req.params;
+  const url = `https://api.themoviedb.org/3/movie/${id}/watch/providers`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${apiReadKey}`,
+    },
+  };
+
+  fetch(url, options)
+    .then((res) => res.json())
+    .then((json) => res.json(json))
+    .catch((err) => console.error(err));
+});
 
 app.post("/watchlist", async (req, res) => {
   const { movie, user } = req.body;
@@ -252,8 +268,11 @@ app.delete("/movielist/movie/:movieId/:listId", async (req, res) => {
       return res.status(404).json({ message: "Movie list not found" });
     }
     const movieIndex = movieList.movies.findIndex(
-      (movie) => movie.id === movieId
+      (movie) => movie.id === Number(movieId)
     );
+    if (movieIndex === -1) {
+      return res.status(404).json({ message: "Movie not found in list" });
+    }
     movieList.movies.splice(movieIndex, 1);
     await movieList.save();
     res.status(200).json({ message: "Movie removed from movie list" });

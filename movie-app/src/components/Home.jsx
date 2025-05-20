@@ -27,6 +27,7 @@ export default function Home() {
       }
 
       const data = await response.json();
+      // console.log(data.results);
       setOptions(data.results);
       setMovie("");
     } catch (error) {
@@ -54,6 +55,7 @@ export default function Home() {
       }
       const data = await response.json();
       setOptions([]);
+      console.log(data.results);
       setRecommendations(data.results);
     } catch (error) {
       console.error("Failed to fetch movie recommendation:", error);
@@ -123,16 +125,45 @@ export default function Home() {
       </nav>
       <div className="search-container">
         <h1>Find a movie 🎥</h1>
-        <h3>
-          Enter the name of the movie you want recommendations for and select
-          the correct option from the images to get your recommendations:
-        </h3>
-        <form onSubmit={handleSubmit} className="search-form">
+        <div
+          style={{
+            fontSize: "1.25rem",
+            maxWidth: "800px",
+            margin: "0 auto",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
+          <p>Enter the name of the movie you want recommendations for</p>
+          <p>
+            {" "}
+            then select the correct option from the images to get your
+            recommendations:
+          </p>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="search-form"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "1rem",
+          }}
+        >
           <input
             type="text"
             value={movie}
             onChange={(e) => setMovie(e.target.value)}
             placeholder="Enter a movie title"
+            style={{
+              padding: "0.5rem",
+              fontSize: "1.25rem",
+              borderRadius: "0.25rem",
+              border: "1px solid #ccc",
+              width: "100%",
+              maxWidth: "400px",
+            }}
           />
           <button type="submit">Find Movie</button>
         </form>

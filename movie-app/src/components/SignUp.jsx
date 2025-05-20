@@ -33,12 +33,22 @@ const SignUp = () => {
   };
   return (
     <div>
+      <h1 style={{ fontSize: "3rem", paddingBottom: "150px" }}>Movie Pal 🍿</h1>
       <h2>Sign Up</h2>
       <p>Please enter a username and password to sign up.</p>
       <p>
         Already have an account? <a href="/login">Login</a>
       </p>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
+          padding: "2rem",
+        }}
+      >
         <label>
           Username:
           <input

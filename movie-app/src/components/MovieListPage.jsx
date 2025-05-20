@@ -49,7 +49,7 @@ const MovieListPage = () => {
         toast.style.padding = "16px";
         toast.style.borderRadius = "4px";
         toast.style.zIndex = "1000";
-        toast.textContent = "Sign in to add to watchlist";
+        toast.textContent = "Not signed in or already in watchlist!";
         document.body.appendChild(toast);
         setTimeout(() => {
           document.body.removeChild(toast);
@@ -101,7 +101,15 @@ const MovieListPage = () => {
   return (
     <div>
       <nav className="navbar" style={navbarStyle}>
-        <Link to="/" style={linkStyle}>
+        <Link
+          to="/"
+          style={{
+            color: "white",
+            textDecoration: "none",
+            fontSize: "2rem",
+            fontWeight: "bold",
+          }}
+        >
           Movie Pal 🍿
         </Link>
         <div style={linksContainerStyle}>
@@ -117,7 +125,9 @@ const MovieListPage = () => {
             All Movies
           </Link>
           {user ? (
-            <button onClick={logout}>Logout</button>
+            <Link style={linkStyle} to="/login">
+              <button onClick={logout}>Logout</button>
+            </Link>
           ) : (
             <Link style={linkStyle} to="/login">
               <button>Login</button>
@@ -127,8 +137,8 @@ const MovieListPage = () => {
       </nav>
       <div className="movie-list-container">
         <h1>Movie Lists</h1>
-        <h2>Explore other people's movie lists to get ideas 👀</h2>
-        <h3>and click to add to your watchlist!</h3>
+        <h2>Explore curated movie lists 👀</h2>
+        <h3>click to add to your watchlist!</h3>
         <ul>
           {movieLists.map((list, index) => (
             <li

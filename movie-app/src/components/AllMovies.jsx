@@ -99,7 +99,15 @@ const AllMovies = () => {
   return (
     <div>
       <nav className="navbar" style={navbarStyle}>
-        <Link to="/" style={linkStyle}>
+        <Link
+          to="/"
+          style={{
+            color: "white",
+            textDecoration: "none",
+            fontSize: "2rem",
+            fontWeight: "bold",
+          }}
+        >
           Movie Pal 🍿
         </Link>
         <div style={linksContainerStyle}>
@@ -115,7 +123,9 @@ const AllMovies = () => {
             All Movies
           </Link>
           {user ? (
-            <button onClick={logout}>Logout</button>
+            <Link style={linkStyle} to="/login">
+              <button onClick={logout}>Logout</button>
+            </Link>
           ) : (
             <Link style={linkStyle} to="/login">
               <button>Login</button>

@@ -10,6 +10,7 @@ import SignUp from "./components/SignUp";
 import AllMovies from "./components/AllMovies";
 import MovieListPage from "./components/MovieListPage";
 import { AuthProvider } from "./UserContext";
+import Details from "./components/Details";
 
 function App() {
   // const [watchlist, setWatchlist] = useState([]);
@@ -26,6 +27,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/allmovies" element={<AllMovies />} />
             <Route path="/movielist" element={<MovieListPage />} />
+            <Route path="/details" element={<Details />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
