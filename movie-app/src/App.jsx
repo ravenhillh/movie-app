@@ -11,6 +11,7 @@ import AllMovies from "./components/AllMovies";
 import MovieListPage from "./components/MovieListPage";
 import { AuthProvider } from "./UserContext";
 import Details from "./components/Details";
+import Layout from "./components/Layout";
 
 function App() {
   // const [watchlist, setWatchlist] = useState([]);
@@ -20,14 +21,16 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/watchlist" element={<Watchlist />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/allmovies" element={<AllMovies />} />
-            <Route path="/movielist" element={<MovieListPage />} />
-            <Route path="/details" element={<Details />} />
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/watchlist" element={<Watchlist />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/allmovies" element={<AllMovies />} />
+              <Route path="/movielist" element={<MovieListPage />} />
+              <Route path="/details" element={<Details />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </AuthProvider>

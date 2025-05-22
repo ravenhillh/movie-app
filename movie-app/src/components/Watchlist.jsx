@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../UserContext";
 import {
   getWatchlist,
@@ -13,7 +12,7 @@ import {
 } from "../utils/utils";
 
 export default function Watchlist() {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [movieListTitle, setMovieListTitle] = useState("");
   const [movieListDescription, setMovieListDescription] = useState("");
   const [movieList, setMovieList] = useState([]);
@@ -22,6 +21,13 @@ export default function Watchlist() {
   const [isMovieListOpen, setIsMovieListOpen] = useState(false);
   const [isCreateListOpen, setIsCreateListOpen] = useState(false);
   const [watchlist, setWatchlist] = useState([]);
+
+  useEffect(() => {
+    if (user && user.user && user.user.id) {
+      getWatchlist(user.user.id, setWatchlist);
+      getMovieLists(user.user.id, setMovieList);
+    }
+  }, [user]);
 
   const handleDeleteMovieListOption = async (e, movieId, listId) => {
     e.preventDefault();
@@ -44,26 +50,6 @@ export default function Watchlist() {
     } catch (error) {
       console.error("Failed to delete from movie list:", error);
     }
-  };
-
-  const navbarStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "0.75rem 1.5rem",
-    backgroundColor: "#333",
-    color: "white",
-  };
-  const linksContainerStyle = {
-    display: "flex",
-    gap: "1.5rem",
-    alignItems: "center",
-  };
-  const linkStyle = {
-    color: "white",
-    textDecoration: "none",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
   };
   const watchlistDiv = () => {
     return watchlist.map((movie, index) => (
@@ -161,12 +147,7 @@ export default function Watchlist() {
     setIsWatchlistOpen(true);
     setIsMovieListOpen(false);
   };
-  useEffect(() => {
-    if (user && user.user && user.user.id) {
-      getWatchlist(user.user.id, setWatchlist);
-      getMovieLists(user.user.id, setMovieList);
-    }
-  }, [user]);
+
   // const handleFindStreaming = async (e, id) => {
   //   e.preventDefault();
   //   try {
@@ -192,33 +173,6 @@ export default function Watchlist() {
 
   return (
     <div>
-      <nav className="navbar" style={navbarStyle}>
-        <Link
-          to="/"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontSize: "2rem",
-            fontWeight: "bold",
-          }}
-        >
-          Movie Pal 🍿
-        </Link>
-        <div style={linksContainerStyle}>
-          <Link to="/watchlist" style={linkStyle}>
-            My Profile
-          </Link>
-          <Link style={linkStyle} to="/movielist">
-            Movie Lists
-          </Link>
-          <Link style={linkStyle} to="/allmovies">
-            All Movies
-          </Link>
-          <Link style={linkStyle} to="/login">
-            <button onClick={logout}>Logout</button>
-          </Link>
-        </div>
-      </nav>
       <h2>Explore your movies and movie lists 🕵️‍♀️</h2>
       <div className="list-tabs">
         <button onClick={handleWatchlistClick}>Watchlist</button>

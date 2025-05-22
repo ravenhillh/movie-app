@@ -40,7 +40,9 @@ const Nav = () => {
           All Movies
         </Link>
         {user ? (
-          <button onClick={logout}>Logout</button>
+          <Link style={linkStyle} to="/login">
+            <button onClick={logout}>Logout</button>
+          </Link>
         ) : (
           <Link style={linkStyle} to="/login">
             <button>Login</button>
